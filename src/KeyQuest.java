@@ -1,7 +1,8 @@
 package src;
 
-public class TestClass {
+public class KeyQuest {
+
     public static void main(String[] args){
-        //test
+        Menu frame = new Menu();
     }
 }
