@@ -34,13 +34,14 @@ public class GamePanel extends JPanel implements Runnable{
 
     GamePanel(){
 
+        player = new Player(this, keyH);
+        this.newPlayer();
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
         this.addKeyListener(keyH);
         this.setBackground(Color.black);
 
-        newPlayer();
 
         startGameThread();
     }
@@ -82,10 +83,10 @@ public class GamePanel extends JPanel implements Runnable{
         double nextDrawTime = System.nanoTime() + drawInterval;
 
         while(gameThread != null){
-            //update info
+            //update
             update();
 
-            //draw screen
+            //draw
             repaint();
 
             try{
@@ -113,6 +114,8 @@ public class GamePanel extends JPanel implements Runnable{
     public static class AL extends KeyAdapter{
 
         public boolean upPressed, downPressed, leftPressed, rightPressed;
+
+        @Override
         public void keyPressed(KeyEvent e){
             int code = e.getKeyCode();
 
@@ -131,6 +134,7 @@ public class GamePanel extends JPanel implements Runnable{
                     break;
             }
         }
+        @Override
         public void keyReleased(KeyEvent e){
 
             int code = e.getKeyCode();

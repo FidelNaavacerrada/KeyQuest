@@ -17,13 +17,14 @@ public class Player extends Entity{
     int xVelocity;
     int yVelocity;
     int health;
-    int lifes;
+    int lives;
 
     public Player(GamePanel gp, GamePanel.AL keyH){
         this.gp = gp;
         this.keyH = keyH;
 
         setDefaultValues();
+        getPlayerImage();
     }
 
     public void setDefaultValues(){
@@ -35,42 +36,53 @@ public class Player extends Entity{
     }
 
     public void update(){
-        if(keyH.upPressed == true){
-            direction = "up";
-            y -= speed;
-        }
-        if(keyH.downPressed == true){
-            direction = "down";
-            y += speed;
-        }
-        if(keyH.leftPressed == true){
-            direction = "left";
-            x -= speed;
-        }
-        if(keyH.rightPressed == true){
-            direction = "right";
-            x += speed;
+        if(keyH.downPressed == true || keyH.leftPressed == true || keyH.upPressed == true || keyH.rightPressed == true){
+            if(keyH.upPressed == true){
+                direction = "up";
+                y -= speed;
+            }
+            if(keyH.downPressed == true){
+                direction = "down";
+                y += speed;
+            }
+            if(keyH.leftPressed == true){
+                direction = "left";
+                x -= speed;
+            }
+            if(keyH.rightPressed == true){
+                direction = "right";
+                x += speed;
+            }
+
+            spriteCounter++;
+            if(spriteCounter>12){
+                if(spriteNumber==1)
+                    spriteNumber=2;
+                else if(spriteNumber==2)
+                    spriteNumber=1;
+                spriteCounter=0;
+            }
         }
     }
 
     public void getPlayerImage(){
         try{
-            up1 = ImageIO.read(getClass().getResourceAsStream("player/up1-boy.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("player/up2-boy.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("player/down1-boy.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("player/down2-boy.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("player/left1-boy.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("player/left2-boy.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("player/right1-boy.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("player/right2-boy.png"));
-            standing = ImageIO.read(getClass().getResourceAsStream("player/standing-boy.png"));
+            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/up1-boy.png"));
+            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/up2-boy.png"));
+            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/down1-boy.png"));
+            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/down2-boy.png"));
+            left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/left1-boy.png"));
+            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/left2-boy.png"));
+            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/right1-boy.png"));
+            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/right2-boy.png"));
+            standing = ImageIO.read(getClass().getResourceAsStream("/res/player/standing-boy.png"));
 
         }catch(IOException e) {
             throw new RuntimeException(e);
         }
 
     }
-
+    /*
     public void keyPressed(KeyEvent e){
 
     }
@@ -87,21 +99,35 @@ public class Player extends Entity{
     public void move(){
 
     }
+
+     */
     public void draw(Graphics g2){
         BufferedImage image = null;
 
         switch(direction){
             case "up":
-                image = up1;
+                if(spriteNumber==1)
+                    image = up1;
+                if(spriteNumber==2)
+                    image = up2;
                 break;
             case "down":
-                image = down1;
+                if(spriteNumber==1)
+                    image = down1;
+                if(spriteNumber==2)
+                    image = down2;
                 break;
             case "left":
-                image = left1;
+                if(spriteNumber==1)
+                    image = left1;
+                if(spriteNumber==2)
+                    image = left2;
                 break;
             case "right":
-                image = right1;
+                if(spriteNumber==1)
+                    image = right1;
+                if(spriteNumber==2)
+                    image = right2;
                 break;
         }
         g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
