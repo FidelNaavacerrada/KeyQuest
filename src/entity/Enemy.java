@@ -1,25 +1,17 @@
-package src;
+package entity;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
-public class Player {
+public class Enemy {
 
     int xVelocity;
     int yVelocity;
     int health;
-    int lifes;
 
-    Player(){
-
-    }
-
-    public void keyPressed(KeyEvent e){
-
-    }
-    public void keyReleased(KeyEvent e){
+    Enemy(){
 
     }
 

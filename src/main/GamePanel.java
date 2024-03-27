@@ -1,29 +1,27 @@
-package src;
+package main;
+
+import entity.Player;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTreeUI;
 
 public class GamePanel extends JPanel implements Runnable{
 
     //Screen dimensions and resolution
     static final int originalTileSize = 16;
     static final int scale = 3;
-    static final int tileSize = originalTileSize*scale;
+    public static final int tileSize = originalTileSize*scale;
     static final int GAME_WIDTH = 16;
     static final int GAME_HEIGHT = 12;
     static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH*tileSize,GAME_HEIGHT*tileSize);//768x576
 
     //FPS
-    int FPS = 60;
+    static final int FPS = 60;
 
     //Key Handler
     AL keyH = new AL();
-
-    //Player base position and speed
-    int playerX=100, playerY=100, playerSpeed=5;
 
     Thread gameThread;
     Image image;
@@ -35,12 +33,14 @@ public class GamePanel extends JPanel implements Runnable{
 
 
     GamePanel(){
-        newPlayer();
+
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
         this.addKeyListener(keyH);
         this.setBackground(Color.black);
+
+        newPlayer();
 
         startGameThread();
     }
@@ -51,16 +51,16 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void newPlayer(){
-
+        player = new Player(this, keyH);
     }
 
+    @Override
     public void paint(Graphics g){
 
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        g2.setColor(Color.white);
-        g2.fillRect(playerX, playerY, tileSize, tileSize);
+        player.draw(g2);
 
     }
 
@@ -107,18 +107,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void update(){
 
-        if(keyH.upPressed == true){
-            playerY -= playerSpeed;
-        }
-        if(keyH.downPressed == true){
-            playerY += playerSpeed;
-        }
-        if(keyH.leftPressed == true){
-            playerX -= playerSpeed;
-        }
-        if(keyH.rightPressed == true){
-            playerX += playerSpeed;
-        }
+        player.update();
     }
 
     public static class AL extends KeyAdapter{
