@@ -55,7 +55,7 @@ public class Player extends Entity{
             }
 
             spriteCounter++;
-            if(spriteCounter>12){
+            if(spriteCounter>10){
                 if(spriteNumber==1)
                     spriteNumber=2;
                 else if(spriteNumber==2)

@@ -1,6 +1,7 @@
 package main;
 
 import entity.Player;
+import tiles.TileManager;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,12 +14,14 @@ public class GamePanel extends JPanel implements Runnable{
     static final int originalTileSize = 16;
     static final int scale = 3;
     public static final int tileSize = originalTileSize*scale;
-    static final int GAME_WIDTH = 16;
-    static final int GAME_HEIGHT = 12;
-    static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH*tileSize,GAME_HEIGHT*tileSize);//768x576
+    public static final int GAME_WIDTH = 16;
+    public static final int GAME_HEIGHT = 12;
+    public static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH*tileSize,GAME_HEIGHT*tileSize);//768x576
 
     //FPS
     static final int FPS = 60;
+
+    TileManager tileM = new TileManager(this);
 
     //Key Handler
     AL keyH = new AL();
@@ -61,7 +64,11 @@ public class GamePanel extends JPanel implements Runnable{
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        tileM.draw(g2);
+
         player.draw(g2);
+
+        g2.dispose();
 
     }
 
