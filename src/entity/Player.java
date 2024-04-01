@@ -35,7 +35,6 @@ public class Player extends Entity{
         setDefaultValues();
         getPlayerImage();
     }
-
     public void setDefaultValues(){
         worldX = 100;
         worldY = 100;
@@ -43,33 +42,23 @@ public class Player extends Entity{
 
         direction = "down";
     }
-
     public void update(){
         if(keyH.downPressed == true || keyH.leftPressed == true || keyH.upPressed == true || keyH.rightPressed == true){
             if(keyH.upPressed == true){
                 direction = "up";
-
             }
             if(keyH.downPressed == true){
                 direction = "down";
-
             }
             if(keyH.leftPressed == true){
                 direction = "left";
-
             }
             if(keyH.rightPressed == true){
                 direction = "right";
-
             }
-
             //check tile collision
             collisionOn = false;
             gp.collisionManager.checkTile(this);
-
-            //check object collision
-            int objIndex = gp.collisionManager.checkObject(this,true);
-            pickUpObj(objIndex);
 
             //if !collisionOn, player moves
             if(!collisionOn){
@@ -88,7 +77,6 @@ public class Player extends Entity{
                         break;
                 }
             }
-
             spriteCounter++;
             if(spriteCounter>10){
                 if(spriteNumber==1)
@@ -98,29 +86,37 @@ public class Player extends Entity{
                 spriteCounter=0;
             }
         }
+        //Object interaction when pressing E
+        int objIndex = gp.collisionManager.checkObject(this);
+        if(keyH.ePressed){
+            try{
+                pickUpObj(objIndex);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
-
-    public void pickUpObj(int i){
-        if(i!=999){
+    public void pickUpObj(int i) throws IOException {
+        if(i!=100){
 
             String objName = gp.obj[i].name;
 
             switch(objName){
-                case "Key":
-                    hasKey++;
-                    gp.obj[i]=null;
-                    break;
-                case "Door":
-                    if(hasKey>0){
-                        gp.obj[i]=null;
-                        hasKey--;
-                    }
-                    break;
+            case "Key":
+                hasKey++;
+                gp.obj[i]=null;
+                System.out.println("Key nº"+hasKey);
+                break;
+            case "Door":
+                if(hasKey>0){
+                    gp.obj[i].collision = false;
+                    gp.obj[i].image = ImageIO.read(getClass().getResourceAsStream("/res/objects/door_open.png"));
+                    hasKey--;
+                }
+                break;
             }
-
         }
     }
-
     public void getPlayerImage(){
         try{
             up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/up1-boy.png"));

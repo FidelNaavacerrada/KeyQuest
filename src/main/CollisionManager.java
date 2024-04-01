@@ -1,6 +1,7 @@
 package main;
 
 import entity.Entity;
+import entity.Player;
 
 public class CollisionManager {
 
@@ -59,11 +60,12 @@ public class CollisionManager {
         }
     }
 
-    public int checkObject(Entity entity, boolean player){
+    public int checkObject(Entity entity){
 
-        int index = 999;
+        int index = 100;
 
         for(int i=0;i<gp.obj.length;i++){
+
             if(gp.obj[i]!=null){
                 entity.realArea.x = entity.worldX+entity.realArea.x;
                 entity.realArea.y = entity.worldY+entity.realArea.y;
@@ -74,35 +76,47 @@ public class CollisionManager {
                 switch(entity.direction){
                     case "up":
                         entity.realArea.y-=entity.speed;
-                        if(entity.realArea.intersects(gp.obj[i].realArea))
-                            if(gp.obj[i].collision==true)
+                        if(entity.realArea.intersects(gp.obj[i].realArea)){
+                            if(gp.obj[i].collision){
                                 entity.collisionOn=true;
-                            if(player==true)
+                            }
+                            if(entity instanceof Player){
                                 index=i;
+                            }
+                        }
                         break;
                     case "down":
                         entity.realArea.y+=entity.speed;
-                        if(entity.realArea.intersects(gp.obj[i].realArea))
-                            if(gp.obj[i].collision==true)
+                        if(entity.realArea.intersects(gp.obj[i].realArea)){
+                            if(gp.obj[i].collision){
                                 entity.collisionOn=true;
-                            if(player==true)
+                            }
+                            if(entity instanceof Player){
                                 index=i;
+                            }
+                        }
                         break;
                     case "left":
                         entity.realArea.x-=entity.speed;
-                        if(entity.realArea.intersects(gp.obj[i].realArea))
-                            if(gp.obj[i].collision==true)
+                        if(entity.realArea.intersects(gp.obj[i].realArea)){
+                            if(gp.obj[i].collision){
                                 entity.collisionOn=true;
-                            if(player==true)
+                            }
+                            if(entity instanceof Player){
                                 index=i;
+                            }
+                        }
                         break;
                     case "right":
                         entity.realArea.x+=entity.speed;
-                        if(entity.realArea.intersects(gp.obj[i].realArea))
-                            if(gp.obj[i].collision==true)
+                        if(entity.realArea.intersects(gp.obj[i].realArea)){
+                            if(gp.obj[i].collision){
                                 entity.collisionOn=true;
-                            if(player==true)
+                            }
+                            if(entity instanceof Player){
                                 index=i;
+                            }
+                        }
                         break;
                 }
                 entity.realArea.x = entity.realAreaDefX;

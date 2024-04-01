@@ -135,7 +135,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public static class AL extends KeyAdapter{
 
-        public boolean upPressed, downPressed, leftPressed, rightPressed;
+        public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
 
         @Override
         public void keyPressed(KeyEvent e){
@@ -154,6 +154,8 @@ public class GamePanel extends JPanel implements Runnable{
                 case KeyEvent.VK_D:
                     rightPressed = true;
                     break;
+                case KeyEvent.VK_E:
+                    ePressed = true;
             }
         }
         @Override
@@ -174,6 +176,8 @@ public class GamePanel extends JPanel implements Runnable{
                 case KeyEvent.VK_D:
                     rightPressed = false;
                     break;
+                case KeyEvent.VK_E:
+                    ePressed = false;
             }
         }
     }
