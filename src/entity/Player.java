@@ -3,33 +3,38 @@ package entity;
 import main.GamePanel;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.*;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
 public class Player extends Entity{
 
     GamePanel gp;
     GamePanel.AL keyH;
+
+    public final int screenX,screenY;
+
+    /*
     int xVelocity;
     int yVelocity;
     int health;
     int lives;
+     */
 
     public Player(GamePanel gp, GamePanel.AL keyH){
         this.gp = gp;
         this.keyH = keyH;
+
+        screenX = gp.SCREEN_WIDTH/2 - (gp.tileSize/2);
+        screenY = gp.SCREEN_HEIGHT/2 - (gp.tileSize/2);
 
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues(){
-        x = 100;
-        y = 100;
+        playerX = 100;
+        playerY = 100;
         speed = 5;
 
         direction = "down";
@@ -39,19 +44,19 @@ public class Player extends Entity{
         if(keyH.downPressed == true || keyH.leftPressed == true || keyH.upPressed == true || keyH.rightPressed == true){
             if(keyH.upPressed == true){
                 direction = "up";
-                y -= speed;
+                playerY -= speed;
             }
             if(keyH.downPressed == true){
                 direction = "down";
-                y += speed;
+                playerY += speed;
             }
             if(keyH.leftPressed == true){
                 direction = "left";
-                x -= speed;
+                playerX -= speed;
             }
             if(keyH.rightPressed == true){
                 direction = "right";
-                x += speed;
+                playerX += speed;
             }
 
             spriteCounter++;
@@ -130,6 +135,6 @@ public class Player extends Entity{
                     image = right2;
                 break;
         }
-        g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
     }
 }

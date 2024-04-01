@@ -16,7 +16,15 @@ public class GamePanel extends JPanel implements Runnable{
     public static final int tileSize = originalTileSize*scale;
     public static final int GAME_WIDTH = 16;
     public static final int GAME_HEIGHT = 12;
-    public static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH*tileSize,GAME_HEIGHT*tileSize);//768x576
+    public static final int SCREEN_WIDTH = GAME_WIDTH*tileSize;
+    public static final int SCREEN_HEIGHT = GAME_HEIGHT*tileSize;
+    public static final Dimension SCREEN_SIZE = new Dimension(SCREEN_WIDTH,SCREEN_HEIGHT);//768x576
+
+    //BIG MAP SETTINGS
+    public final int maxWorldCol = 48;
+    public final int maxWorldRow = 48;
+    public final int worldWidth = tileSize * maxWorldCol;
+    public final int worldHeight = tileSize * maxWorldRow;
 
     //FPS
     static final int FPS = 60;
@@ -30,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable{
     Image image;
     Graphics graphics;
     Random random;
-    Player player;
+    public Player player;
     int numberOfRooms;
     int enemiesPerRoom;
 
