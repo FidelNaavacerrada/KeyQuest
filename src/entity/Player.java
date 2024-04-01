@@ -11,8 +11,8 @@ public class Player extends Entity{
 
     GamePanel gp;
     GamePanel.AL keyH;
-
     public final int screenX,screenY;
+    int hasKey = 0;
 
     /*
     int xVelocity;
@@ -28,13 +28,17 @@ public class Player extends Entity{
         screenX = gp.SCREEN_WIDTH/2 - (gp.tileSize/2);
         screenY = gp.SCREEN_HEIGHT/2 - (gp.tileSize/2);
 
+        realArea = new Rectangle(8,16,32,32);
+        realAreaDefX = realArea.x;
+        realAreaDefY = realArea.y;
+
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues(){
-        playerX = 100;
-        playerY = 100;
+        worldX = 100;
+        worldY = 100;
         speed = 5;
 
         direction = "down";
@@ -44,19 +48,45 @@ public class Player extends Entity{
         if(keyH.downPressed == true || keyH.leftPressed == true || keyH.upPressed == true || keyH.rightPressed == true){
             if(keyH.upPressed == true){
                 direction = "up";
-                playerY -= speed;
+
             }
             if(keyH.downPressed == true){
                 direction = "down";
-                playerY += speed;
+
             }
             if(keyH.leftPressed == true){
                 direction = "left";
-                playerX -= speed;
+
             }
             if(keyH.rightPressed == true){
                 direction = "right";
-                playerX += speed;
+
+            }
+
+            //check tile collision
+            collisionOn = false;
+            gp.collisionManager.checkTile(this);
+
+            //check object collision
+            int objIndex = gp.collisionManager.checkObject(this,true);
+            pickUpObj(objIndex);
+
+            //if !collisionOn, player moves
+            if(!collisionOn){
+                switch(direction){
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
             }
 
             spriteCounter++;
@@ -67,6 +97,27 @@ public class Player extends Entity{
                     spriteNumber=1;
                 spriteCounter=0;
             }
+        }
+    }
+
+    public void pickUpObj(int i){
+        if(i!=999){
+
+            String objName = gp.obj[i].name;
+
+            switch(objName){
+                case "Key":
+                    hasKey++;
+                    gp.obj[i]=null;
+                    break;
+                case "Door":
+                    if(hasKey>0){
+                        gp.obj[i]=null;
+                        hasKey--;
+                    }
+                    break;
+            }
+
         }
     }
 

@@ -12,8 +12,8 @@ import java.io.InputStreamReader;
 public class TileManager {
 
     GamePanel gp;
-    Tile[] tile;
-    int mapTileMatrix[][];
+    public Tile[] tile;
+    public int mapTileMatrix[][];
 
     public TileManager(GamePanel gp){
 
@@ -78,13 +78,13 @@ public class TileManager {
 
             int worldX = worldCol * gp.tileSize;
             int worldY = worldRow * gp.tileSize;
-            int screenX = worldX - gp.player.playerX + gp.player.screenX;
-            int screenY = worldY - gp.player.playerY + gp.player.screenY;
+            int screenX = worldX - gp.player.worldX + gp.player.screenX;
+            int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
-            if(worldX + gp.tileSize > gp.player.playerX - gp.player.screenX &&
-                    worldX - gp.tileSize < gp.player.playerX + gp.player.screenX &&
-                    worldY + gp.tileSize > gp.player.playerY - gp.player.screenY &&
-                    worldY - gp.tileSize < gp.player.playerY + gp.player.screenY){
+            if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX &&
+                    worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
+                    worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
+                    worldY - gp.tileSize < gp.player.worldY + gp.player.screenY){
                 g2.drawImage(tile[tileNum].image, screenX, screenY, gp.tileSize, gp.tileSize, null);
             }
 
