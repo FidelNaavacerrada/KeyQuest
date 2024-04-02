@@ -1,6 +1,7 @@
 package entity;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -120,41 +121,32 @@ public class Player extends Entity{
         }
     }
     public void getPlayerImage(){
+
+        up1 = setup("up1-boy");
+        up2 = setup("up2-boy");
+        down1 = setup("down1-boy");
+        down2 = setup("down2-boy");
+        left1 = setup("left1-boy");
+        left2 = setup("left2-boy");
+        right1 = setup("right1-boy");
+        right2 = setup("right2-boy");
+        standing = setup("standing-boy");
+
+    }
+    public BufferedImage setup(String imageName){
+
+        UtilityTool uTool = new UtilityTool();
+        BufferedImage scaledImage = null;
+
         try{
-            up1 = ImageIO.read(getClass().getResourceAsStream("/res/player/up1-boy.png"));
-            up2 = ImageIO.read(getClass().getResourceAsStream("/res/player/up2-boy.png"));
-            down1 = ImageIO.read(getClass().getResourceAsStream("/res/player/down1-boy.png"));
-            down2 = ImageIO.read(getClass().getResourceAsStream("/res/player/down2-boy.png"));
-            left1 = ImageIO.read(getClass().getResourceAsStream("/res/player/left1-boy.png"));
-            left2 = ImageIO.read(getClass().getResourceAsStream("/res/player/left2-boy.png"));
-            right1 = ImageIO.read(getClass().getResourceAsStream("/res/player/right1-boy.png"));
-            right2 = ImageIO.read(getClass().getResourceAsStream("/res/player/right2-boy.png"));
-            standing = ImageIO.read(getClass().getResourceAsStream("/res/player/standing-boy.png"));
-
-        }catch(IOException e) {
-            throw new RuntimeException(e);
+            scaledImage = ImageIO.read(getClass().getResourceAsStream("/res/player/"+imageName+".png"));
+            scaledImage = uTool.scaleImage(scaledImage, gp.tileSize, gp.tileSize);
+        }catch(IOException e){
+            e.printStackTrace();
         }
-
-    }
-    /*
-    public void keyPressed(KeyEvent e){
-
-    }
-    public void keyReleased(KeyEvent e){
-
+        return scaledImage;
     }
 
-    public void setXDirection(int xDirection){
-
-    }
-    public void setYDirection(int yDirection){
-
-    }
-    public void move(){
-
-    }
-
-     */
     public void draw(Graphics g2){
         BufferedImage image = null;
 
@@ -184,6 +176,6 @@ public class Player extends Entity{
                     image = right2;
                 break;
         }
-        g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+        g2.drawImage(image, screenX, screenY, null);
     }
 }

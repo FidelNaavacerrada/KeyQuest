@@ -11,11 +11,11 @@ public class AssetSetter {
     }
 
     public void setAsset(){
-        gp.obj[0] = new Key();
+        gp.obj[0] = new Key(gp);
         gp.obj[0].x = 3*gp.tileSize;
         gp.obj[0].y = 1*gp.tileSize;
 
-        gp.obj[1] = new Door();
+        gp.obj[1] = new Door(gp);
         gp.obj[1].x = 12*gp.tileSize;
         gp.obj[1].y = 5*gp.tileSize;
     }
