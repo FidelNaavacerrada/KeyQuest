@@ -77,8 +77,10 @@ public class CollisionManager {
                     case "up":
                         entity.realArea.y-=entity.speed;
                         if(entity.realArea.intersects(gp.obj[i].realArea)){
-                            if(gp.obj[i].collision){
+                            //System.out.println(gp.obj[i].collision);
+                            if(gp.obj[i].collision==true){
                                 entity.collisionOn=true;
+                                System.out.println(entity.collisionOn);
                             }
                             if(entity instanceof Player){
                                 index=i;
@@ -88,7 +90,7 @@ public class CollisionManager {
                     case "down":
                         entity.realArea.y+=entity.speed;
                         if(entity.realArea.intersects(gp.obj[i].realArea)){
-                            if(gp.obj[i].collision){
+                            if(gp.obj[i].collision==true){
                                 entity.collisionOn=true;
                             }
                             if(entity instanceof Player){
@@ -99,7 +101,7 @@ public class CollisionManager {
                     case "left":
                         entity.realArea.x-=entity.speed;
                         if(entity.realArea.intersects(gp.obj[i].realArea)){
-                            if(gp.obj[i].collision){
+                            if(gp.obj[i].collision==true){
                                 entity.collisionOn=true;
                             }
                             if(entity instanceof Player){
@@ -110,7 +112,7 @@ public class CollisionManager {
                     case "right":
                         entity.realArea.x+=entity.speed;
                         if(entity.realArea.intersects(gp.obj[i].realArea)){
-                            if(gp.obj[i].collision){
+                            if(gp.obj[i].collision==true){
                                 entity.collisionOn=true;
                             }
                             if(entity instanceof Player){

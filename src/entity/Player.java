@@ -12,11 +12,9 @@ public class Player extends Entity{
     GamePanel gp;
     GamePanel.AL keyH;
     public final int screenX,screenY;
-    int hasKey = 0;
+    public int hasKey = 0;
 
     /*
-    int xVelocity;
-    int yVelocity;
     int health;
     int lives;
      */
@@ -60,6 +58,13 @@ public class Player extends Entity{
             collisionOn = false;
             gp.collisionManager.checkTile(this);
 
+            int objIndex = gp.collisionManager.checkObject(this);
+            try{
+                pickUpObj(objIndex);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
             //if !collisionOn, player moves
             if(!collisionOn){
                 switch(direction){
@@ -85,33 +90,30 @@ public class Player extends Entity{
                     spriteNumber=1;
                 spriteCounter=0;
             }
+
         }
-        //Object interaction when pressing E
-        int objIndex = gp.collisionManager.checkObject(this);
-        if(keyH.ePressed){
-            try{
-                pickUpObj(objIndex);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+
     }
-    public void pickUpObj(int i) throws IOException {
+    public void pickUpObj(int i) throws IOException{
         if(i!=100){
 
             String objName = gp.obj[i].name;
-
             switch(objName){
             case "Key":
                 hasKey++;
                 gp.obj[i]=null;
-                System.out.println("Key nº"+hasKey);
+                gp.ui.showMessage("+1 Key");
                 break;
             case "Door":
-                if(hasKey>0){
+                if(hasKey>0&& keyH.ePressed){
                     gp.obj[i].collision = false;
                     gp.obj[i].image = ImageIO.read(getClass().getResourceAsStream("/res/objects/door_open.png"));
+                    gp.ui.showMessage("Door Opened");
                     hasKey--;
+                }
+                else{
+                    if(gp.obj[i].collision == true)
+                        gp.ui.showMessage("You need a Key!");
                 }
                 break;
             }

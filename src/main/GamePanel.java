@@ -26,13 +26,18 @@ public class GamePanel extends JPanel implements Runnable{
     public final int maxWorldRow = 48;
     public final int worldWidth = tileSize * maxWorldCol;
     public final int worldHeight = tileSize * maxWorldRow;
+
     //FPS
     static final int FPS = 60;
+
     TileManager tileM = new TileManager(this);
+
     //Key Handler
     AL keyH = new AL();
+
     public CollisionManager collisionManager = new CollisionManager(this);
     public AssetSetter assetSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
     Thread gameThread;
     Image image;
     Graphics graphics;
@@ -81,7 +86,11 @@ public class GamePanel extends JPanel implements Runnable{
                 obj[i].draw(g2, this);
         }
 
+        //Player
         player.draw(g2);
+
+        //UI
+        ui.draw(g2);
 
         g2.dispose();
 

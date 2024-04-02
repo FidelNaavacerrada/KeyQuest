@@ -10,16 +10,13 @@ import javax.swing.*;
 
 public class Door extends SuperObject{
 
-    public BufferedImage openDoor;
-
     public Door(){
         name = "Door";
+        collision = true;
         try{
             image = ImageIO.read(getClass().getResourceAsStream("/res/objects/door_closed.png")); //closed door
-            openDoor = ImageIO.read(getClass().getResourceAsStream("/res/objects/door_open.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        collision = true;
     }
 }
