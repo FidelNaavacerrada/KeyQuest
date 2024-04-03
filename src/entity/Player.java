@@ -60,6 +60,11 @@ public class Player extends Entity{
             collisionOn = false;
             gp.collisionManager.checkTile(this);
 
+            //check  entity collision
+            int npcIndex = gp.collisionManager.checkEntity(this, gp.npc);
+            interactNPC(npcIndex);
+
+            //check object collision
             int objIndex = gp.collisionManager.checkObject(this);
             try{
                 pickUpObj(objIndex);
@@ -117,6 +122,18 @@ public class Player extends Entity{
                         gp.ui.showMessage("You need a Key!");
                 }
                 break;
+            }
+        }
+    }
+    public void interactNPC(int i){
+        if(i!=100){
+
+            if(gp.npc[i] instanceof NPC_Starter){
+
+                if(keyH.ePressed){
+                    gp.gameState=gp.dialogueState;
+                    gp.npc[i].speak();
+                }
             }
         }
     }

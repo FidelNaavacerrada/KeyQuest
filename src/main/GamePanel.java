@@ -55,6 +55,7 @@ public class GamePanel extends JPanel implements Runnable{
     public int gameState;
     public final int playState=1;
     public final int pauseState=2;
+    public final int dialogueState=3;
 
     GamePanel(){
 
@@ -62,7 +63,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
         this.setPreferredSize(SCREEN_SIZE);
         this.addKeyListener(keyH);
-        this.setBackground(Color.black);
+        this.setBackground(Color.darkGray);
 
         this.setupGame();
         startGameThread();
@@ -88,10 +89,19 @@ public class GamePanel extends JPanel implements Runnable{
     public void update(){
 
         if(gameState==playState){
+            //player
             player.update();
+            //npc
+            for(int i=0;i<npc.length;i++) {
+                if (npc[i] != null)
+                    npc[i].update();
+            }
         }
         if(gameState==pauseState){
             //No updates
+        }
+        if(gameState==dialogueState){
+
         }
     }
 
@@ -154,7 +164,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
     public static class AL extends KeyAdapter{
 
-        public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
+        public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed, spacePressed;
         GamePanel gp;
 
         public AL(GamePanel gp){
@@ -165,34 +175,41 @@ public class GamePanel extends JPanel implements Runnable{
         public void keyPressed(KeyEvent e){
             int code = e.getKeyCode();
 
-            switch(code){
-                case KeyEvent.VK_W:
-                    upPressed = true;
-                    break;
-                case KeyEvent.VK_S:
-                    downPressed = true;
-                    break;
-                case KeyEvent.VK_A:
-                    leftPressed = true;
-                    break;
-                case KeyEvent.VK_D:
-                    rightPressed = true;
-                    break;
-                case KeyEvent.VK_E:
-                    //Action Key E
-                    ePressed = true;
-                    break;
-                case KeyEvent.VK_P:
-                    //Pause or unpause game
-                    if(gp.gameState== gp.playState){
-                        gp.gameState=gp.pauseState;
-                        break;
-                    }
-                    else if(gp.gameState==gp.pauseState){
-                        gp.gameState=gp.playState;
-                        break;
-                    }
+            if(gp.gameState==gp.playState) {
 
+                switch (code) {
+
+                    case KeyEvent.VK_W:
+                        upPressed = true;
+                        break;
+                    case KeyEvent.VK_S:
+                        downPressed = true;
+                        break;
+                    case KeyEvent.VK_A:
+                        leftPressed = true;
+                        break;
+                    case KeyEvent.VK_D:
+                        rightPressed = true;
+                        break;
+                    case KeyEvent.VK_E:
+                        //Action Key E
+                        ePressed = true;
+                        break;
+                }
+            }
+            if(gp.gameState==gp.dialogueState){
+                if(code==KeyEvent.VK_SPACE) {
+                    gp.gameState=gp.playState;
+                }
+            }
+            if(code==KeyEvent.VK_P){
+                //Pause or unpause game
+                if(gp.gameState==gp.playState){
+                    gp.gameState=gp.pauseState;
+                }
+                else if(gp.gameState==gp.pauseState){
+                    gp.gameState=gp.playState;
+                }
             }
         }
         @Override

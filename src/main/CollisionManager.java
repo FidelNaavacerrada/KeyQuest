@@ -83,7 +83,6 @@ public class CollisionManager {
 
                             if(gp.obj[i].collision==true){
                                 entity.collisionOn=true;
-                                System.out.println(entity.collisionOn);
                             }
                             if(entity instanceof Player){
                                 index=i;
@@ -131,5 +130,96 @@ public class CollisionManager {
             }
         }
         return index;
+    }
+    public int checkEntity(Entity entity, Entity[] target){
+        //Entity and Enemy collision
+
+        int index = 100;
+
+        for(int i=0;i<gp.obj.length;i++){
+
+            if(target[i]!=null){
+                entity.realArea.x = entity.worldX+entity.realArea.x;
+                entity.realArea.y = entity.worldY+entity.realArea.y;
+
+                target[i].realArea.x = target[i].worldX+target[i].realArea.x;
+                target[i].realArea.y = target[i].worldY+target[i].realArea.y;
+
+                switch(entity.direction){
+                    case "up":
+                        entity.realArea.y-=entity.speed;
+                        if(entity.realArea.intersects(target[i].realArea)){
+                            entity.collisionOn=true;
+                            index=i;
+                        }
+                        break;
+                    case "down":
+                        entity.realArea.y+=entity.speed;
+                        if(entity.realArea.intersects(target[i].realArea)){
+                            entity.collisionOn=true;
+                            index=i;
+                        }
+                        break;
+                    case "left":
+                        entity.realArea.x-=entity.speed;
+                        if(entity.realArea.intersects(target[i].realArea)){
+                            entity.collisionOn=true;
+                            index=i;
+                        }
+                        break;
+                    case "right":
+                        entity.realArea.x+=entity.speed;
+                        if(entity.realArea.intersects(target[i].realArea)){
+                            entity.collisionOn=true;
+                            index=i;
+                        }
+                        break;
+                }
+                entity.realArea.x = entity.realAreaDefX;
+                entity.realArea.y = entity.realAreaDefY;
+                target[i].realArea.x = target[i].realAreaDefX;
+                target[i].realArea.y = target[i].realAreaDefY;
+            }
+        }
+        return index;
+    }
+    public void checkPlayer(Entity entity){
+
+        entity.realArea.x = entity.worldX+entity.realArea.x;
+        entity.realArea.y = entity.worldY+entity.realArea.y;
+
+        gp.player.realArea.x = gp.player.worldX+gp.player.realArea.x;
+        gp.player.realArea.y = gp.player.worldY+gp.player.realArea.y;
+
+        switch(entity.direction){
+            case "up":
+                entity.realArea.y-=entity.speed;
+                if(entity.realArea.intersects(gp.player.realArea)){
+                    entity.collisionOn=true;
+                }
+                break;
+            case "down":
+                entity.realArea.y+=entity.speed;
+                if(entity.realArea.intersects(gp.player.realArea)){
+                    entity.collisionOn=true;
+                }
+                break;
+            case "left":
+                entity.realArea.x-=entity.speed;
+                if(entity.realArea.intersects(gp.player.realArea)){
+                    entity.collisionOn=true;
+                }
+                break;
+            case "right":
+                entity.realArea.x+=entity.speed;
+                if(entity.realArea.intersects(gp.player.realArea)){
+                    entity.collisionOn=true;
+                }
+                break;
+        }
+        entity.realArea.x = entity.realAreaDefX;
+        entity.realArea.y = entity.realAreaDefY;
+        gp.player.realArea.x = gp.player.realAreaDefX;
+        gp.player.realArea.y = gp.player.realAreaDefY;
     }
 }

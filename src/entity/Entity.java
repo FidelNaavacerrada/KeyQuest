@@ -22,11 +22,78 @@ public class Entity {
     public boolean collisionOn = false;
     public GamePanel gp;
     public boolean isMoving;
+    public int timeForMovement=0;
+    public String totalDialogues[]=new String[20];
+    int dialogueIndex = 0;
 
     public Entity(GamePanel gp){
+
         this.gp=gp;
     }
 
+    public void setAction() {}
+    public void setDialogue() {}
+    public void speak() {
+
+        //If the dialog reaches the end it repeats it
+        if(totalDialogues[dialogueIndex]==null){
+            dialogueIndex=0;
+        }
+        gp.ui.dialogue=totalDialogues[dialogueIndex];
+        dialogueIndex++;
+
+        //Npc faces the player when engaged in dialogue
+        switch(gp.player.direction){
+            case "up":
+                direction="down";
+                break;
+            case "down":
+                direction="up";
+                break;
+            case "left":
+                direction="right";
+                break;
+            case "right":
+                direction="left";
+                break;
+        }
+    }
+    public void update(){
+
+        setAction();
+
+        collisionOn=false;
+        gp.collisionManager.checkTile(this);
+        gp.collisionManager.checkObject(this);
+        gp.collisionManager.checkPlayer(this);
+
+        if(isMoving){
+            if(!collisionOn){
+                switch(direction){
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+            spriteCounter++;
+            if(spriteCounter>10){
+                if(spriteNumber==1)
+                    spriteNumber=2;
+                else if(spriteNumber==2)
+                    spriteNumber=1;
+                spriteCounter=0;
+            }
+        }
+    }
     public BufferedImage setup(String imageName){
 
         UtilityTool uTool = new UtilityTool();
