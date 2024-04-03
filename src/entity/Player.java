@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 
 public class Player extends Entity{
 
-    GamePanel gp;
     GamePanel.AL keyH;
     public final int screenX,screenY;
     public int hasKey = 0;
@@ -21,7 +20,7 @@ public class Player extends Entity{
      */
 
     public Player(GamePanel gp, GamePanel.AL keyH){
-        this.gp = gp;
+        super(gp);
         this.keyH = keyH;
 
         screenX = gp.SCREEN_WIDTH/2 - (gp.tileSize/2);
@@ -42,7 +41,9 @@ public class Player extends Entity{
         direction = "down";
     }
     public void update(){
+        isMoving=false;
         if(keyH.downPressed == true || keyH.leftPressed == true || keyH.upPressed == true || keyH.rightPressed == true){
+            isMoving=true;
             if(keyH.upPressed == true){
                 direction = "up";
             }
@@ -91,7 +92,6 @@ public class Player extends Entity{
                     spriteNumber=1;
                 spriteCounter=0;
             }
-
         }
 
     }
@@ -122,29 +122,16 @@ public class Player extends Entity{
     }
     public void getPlayerImage(){
 
-        up1 = setup("up1-boy");
-        up2 = setup("up2-boy");
-        down1 = setup("down1-boy");
-        down2 = setup("down2-boy");
-        left1 = setup("left1-boy");
-        left2 = setup("left2-boy");
-        right1 = setup("right1-boy");
-        right2 = setup("right2-boy");
-        standing = setup("standing-boy");
+        up1 = setup("player/up1-boy");
+        up2 = setup("player/up2-boy");
+        down1 = setup("player/down1-boy");
+        down2 = setup("player/down2-boy");
+        left1 = setup("player/left1-boy");
+        left2 = setup("player/left2-boy");
+        right1 = setup("player/right1-boy");
+        right2 = setup("player/right2-boy");
+        standing = setup("player/standing-boy");
 
-    }
-    public BufferedImage setup(String imageName){
-
-        UtilityTool uTool = new UtilityTool();
-        BufferedImage scaledImage = null;
-
-        try{
-            scaledImage = ImageIO.read(getClass().getResourceAsStream("/res/player/"+imageName+".png"));
-            scaledImage = uTool.scaleImage(scaledImage, gp.tileSize, gp.tileSize);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return scaledImage;
     }
 
     public void draw(Graphics g2){
@@ -162,6 +149,9 @@ public class Player extends Entity{
                     image = down1;
                 if(spriteNumber==2)
                     image = down2;
+                if(!isMoving){
+                    image=standing;
+                }
                 break;
             case "left":
                 if(spriteNumber==1)

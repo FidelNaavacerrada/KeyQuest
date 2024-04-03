@@ -1,5 +1,7 @@
 package main;
 
+import entity.Entity;
+import entity.NPC_Starter;
 import entity.Player;
 import object.SuperObject;
 import tiles.TileManager;
@@ -30,28 +32,34 @@ public class GamePanel extends JPanel implements Runnable{
     //FPS
     static final int FPS = 60;
 
+    //Managers and setters
     TileManager tileM = new TileManager(this);
-
-    //Key Handler
-    AL keyH = new AL();
-
     public CollisionManager collisionManager = new CollisionManager(this);
     public AssetSetter assetSetter = new AssetSetter(this);
+
+    //Key Handler
+    AL keyH = new AL(this);
+
+    //UI
     public UI ui = new UI(this);
+
+    //GameThread
     Thread gameThread;
-    Image image;
-    Graphics graphics;
-    Random random;
+
+    //Entities and objects
     public Player player;
     public SuperObject obj[] = new SuperObject[10];
+    public Entity npc[] = new Entity[10];
 
+    //Game State
+    public int gameState;
+    public final int playState=1;
+    public final int pauseState=2;
 
     GamePanel(){
 
-        player = new Player(this, keyH);
         this.newPlayer();
         this.setFocusable(true);
-        this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
         this.addKeyListener(keyH);
         this.setBackground(Color.black);
@@ -61,16 +69,30 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void setupGame(){
+
+        gameState = playState;
         assetSetter.setAsset();
+        assetSetter.createNPCs();
     }
 
     public void startGameThread(){
+
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     public void newPlayer(){
         player = new Player(this, keyH);
+    }
+
+    public void update(){
+
+        if(gameState==playState){
+            player.update();
+        }
+        if(gameState==pauseState){
+            //No updates
+        }
     }
 
     @Override
@@ -81,35 +103,29 @@ public class GamePanel extends JPanel implements Runnable{
 
         tileM.draw(g2);
 
+        //Obj
         for(int i=0;i<obj.length;i++){
             if(obj[i] != null)
                 obj[i].draw(g2, this);
         }
-
+        //NPC
+        for(int i=0;i<npc.length;i++){
+            if(npc[i] != null)
+                npc[i].draw(g2);
+        }
         //Player
         player.draw(g2);
-
         //UI
         ui.draw(g2);
+
 
         g2.dispose();
 
     }
 
-    public void draw(Graphics g){
-
-    }
-
-    public void move(){
-
-    }
-
-    public void checkCollision(){
-
-    }
-
     public void run(){
 
+        //Game loop
         double drawInterval = 1000000000/FPS; //1 sec/60 -> draw interval
         double nextDrawTime = System.nanoTime() + drawInterval;
 
@@ -136,15 +152,14 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-
-    public void update(){
-
-        player.update();
-    }
-
     public static class AL extends KeyAdapter{
 
         public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
+        GamePanel gp;
+
+        public AL(GamePanel gp){
+            this.gp=gp;
+        }
 
         @Override
         public void keyPressed(KeyEvent e){
@@ -164,7 +179,20 @@ public class GamePanel extends JPanel implements Runnable{
                     rightPressed = true;
                     break;
                 case KeyEvent.VK_E:
+                    //Action Key E
                     ePressed = true;
+                    break;
+                case KeyEvent.VK_P:
+                    //Pause or unpause game
+                    if(gp.gameState== gp.playState){
+                        gp.gameState=gp.pauseState;
+                        break;
+                    }
+                    else if(gp.gameState==gp.pauseState){
+                        gp.gameState=gp.playState;
+                        break;
+                    }
+
             }
         }
         @Override
@@ -187,6 +215,8 @@ public class GamePanel extends JPanel implements Runnable{
                     break;
                 case KeyEvent.VK_E:
                     ePressed = false;
+                    break;
+
             }
         }
     }

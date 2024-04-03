@@ -61,6 +61,7 @@ public class CollisionManager {
     }
 
     public int checkObject(Entity entity){
+        //Entity check collision with different Objects
 
         int index = 100;
 
@@ -77,7 +78,9 @@ public class CollisionManager {
                     case "up":
                         entity.realArea.y-=entity.speed;
                         if(entity.realArea.intersects(gp.obj[i].realArea)){
-                            //System.out.println(gp.obj[i].collision);
+                            /* Use intersects in this method unlike in checkTile,
+                            would be inefficient in checkTile */
+
                             if(gp.obj[i].collision==true){
                                 entity.collisionOn=true;
                                 System.out.println(entity.collisionOn);

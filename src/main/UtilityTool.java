@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 public class UtilityTool {
     /* Utility class for different functionalities */
 
-
     public BufferedImage scaleImage(BufferedImage og, int width, int height){
         /* will optimize rendering by scaling the images beforehand through 2D graphics,
         optimizes draw time by around 25% */
