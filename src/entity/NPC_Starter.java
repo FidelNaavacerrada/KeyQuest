@@ -40,7 +40,7 @@ public class NPC_Starter extends Entity{
 
         totalDialogues[0] = "Finally, a hero! I am trapped here, \nyou must let me out.";
         totalDialogues[1] = "Sorry, I have not introduced myself, \nI am Philip the Great!";
-        totalDialogues[2] = "We need to get out of here, \nyou have to find the MEGAKEY!";
+        totalDialogues[2] = "We need to get out of here, \nyou have to find the MEGAKEY and \nbring it back to me";
         totalDialogues[3] = "Quickly, start by grabbing \nthat key over there and opening the door.";
     }
     public void speak(){

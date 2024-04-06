@@ -1,5 +1,6 @@
 package main;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -18,5 +19,12 @@ public class UtilityTool {
         g2.dispose();
 
         return scaledImage;
+    }
+    public static int centeredTextX(String string, Graphics2D g2, JPanel panel, int panelWidth){
+        //Make Strings centered on x-axis
+        int x;
+        int textLength = (int)g2.getFontMetrics().getStringBounds(string, g2).getWidth();
+        x=panelWidth/2-textLength/2; //x=middle of screen-middle of textLength
+        return x;
     }
 }

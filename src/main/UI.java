@@ -1,7 +1,9 @@
 package main;
 
 import entity.Player;
+import object.Heart;
 import object.Key;
+import object.SuperObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,6 +25,8 @@ public class UI {
     double playTime=0;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
+    BufferedImage full_heart, hit1_heart, hit2_heart, empty_heart;
+
     public UI(GamePanel gp){
 
         this.gp = gp;
@@ -33,6 +37,12 @@ public class UI {
         }catch (IOException | FontFormatException e){
             e.printStackTrace();
         }
+
+        SuperObject heart = new Heart(gp);
+        full_heart=heart.image;
+        hit1_heart=heart.image2;
+        hit2_heart=heart.image3;
+        empty_heart=heart.image4;
     }
 
     public void showMessage(String text){
@@ -69,6 +79,7 @@ public class UI {
                     messageOn=false;
                 }
             }
+            drawLife();
         }
         if(gp.gameState==gp.pauseState){
             //Draw on screen when pause
@@ -82,7 +93,8 @@ public class UI {
     public void drawPauseScreen(){
 
         String text = "PAUSE";
-        int x=centeredTextX(text),y=gp.SCREEN_HEIGHT/2;
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 35F));
+        int x=UtilityTool.centeredTextX(text, g2, gp, gp.SCREEN_WIDTH),y=gp.SCREEN_HEIGHT/2;
         g2.drawString(text, x, y);
     }
     public void drawDialogueScreen(){
@@ -110,11 +122,15 @@ public class UI {
         g2.setStroke(new BasicStroke(5));
         g2.drawRoundRect(x+5, y+5, width-10, height-10, 0, 0);
     }
-    public int centeredTextX(String string){
-        //Make Strings centered on x-axis
-        int x;
-        int textLength = (int)g2.getFontMetrics().getStringBounds(string, g2).getWidth();
-        x=gp.SCREEN_WIDTH/2-textLength/2; //x=middle of screen-middle of textLength
-        return x;
+    public void drawLife(){
+
+        int x=gp.SCREEN_WIDTH-gp.tileSize*3, y=gp.tileSize;
+        int i=0;
+
+        while(i<gp.player.maxLife/3){
+            g2.drawImage(empty_heart, x, y, null);
+            i++;
+            x+=gp.tileSize;
+        }
     }
 }

@@ -14,11 +14,6 @@ public class Player extends Entity{
     public final int screenX,screenY;
     public int hasKey = 0;
 
-    /*
-    int health;
-    int lives;
-     */
-
     public Player(GamePanel gp, GamePanel.AL keyH){
         super(gp);
         this.keyH = keyH;
@@ -37,6 +32,9 @@ public class Player extends Entity{
         worldX = 100;
         worldY = 100;
         speed = 5;
+
+        maxLife=9;//Each life is represented by 1/3 of a heart
+        life=maxLife;
 
         direction = "down";
     }
