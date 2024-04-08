@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="KeyQuest:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/KeyQuest_jar</output-path>
+    <root id="archive" name="KeyQuest.jar">
+      <element id="module-output" name="KeyQuest" />
+    </root>
+  </artifact>
+</component>

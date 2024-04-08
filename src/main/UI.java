@@ -1,8 +1,6 @@
 package main;
 
-import entity.Player;
 import object.Heart;
-import object.Key;
 import object.SuperObject;
 
 import java.awt.*;
@@ -44,13 +42,11 @@ public class UI {
         hit2_heart=heart.image3;
         empty_heart=heart.image4;
     }
-
     public void showMessage(String text){
 
         message = text;
         messageOn = true;
     }
-
     public void draw(Graphics2D g2){
 
         this.g2=g2;
@@ -86,8 +82,16 @@ public class UI {
             drawPauseScreen();
         }
         if(gp.gameState==gp.dialogueState){
-            //Dielogues
+            //Dialogues
             drawDialogueScreen();
+        }
+        if(gp.gameState==gp.gameOver){
+            //Game over
+            drawGameOver();
+        }
+        if(gp.gameState==gp.winState){
+            //Win game
+            drawWinScreen();
         }
     }
     public void drawPauseScreen(){
@@ -113,6 +117,26 @@ public class UI {
             y+=40;
         }
     }
+    public void drawGameOver(){
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0,0,gp.SCREEN_WIDTH, gp.SCREEN_HEIGHT);
+
+        String text = "GAME OVER";
+        g2.setColor(Color.red);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 70F));
+        int x=UtilityTool.centeredTextX(text, g2, gp, gp.SCREEN_WIDTH),y=gp.SCREEN_HEIGHT/2;
+        g2.drawString(text, x, y);
+    }
+    public void drawWinScreen(){
+        g2.setColor(Color.DARK_GRAY);
+        g2.fillRect(0,0,gp.SCREEN_WIDTH, gp.SCREEN_HEIGHT);
+
+        String text = "YOU WON!";
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 70F));
+        int x=UtilityTool.centeredTextX(text, g2, gp, gp.SCREEN_WIDTH),y=gp.SCREEN_HEIGHT/2;
+        g2.drawString(text, x, y);
+    }
     public void createDialogueBox(int x, int y, int width, int height){
 
         g2.setColor(Color.BLACK);
@@ -124,13 +148,36 @@ public class UI {
     }
     public void drawLife(){
 
-        int x=gp.SCREEN_WIDTH-gp.tileSize*3, y=gp.tileSize;
+        int x=gp.SCREEN_WIDTH-gp.tileSize*4, y=gp.tileSize;
         int i=0;
 
+        //Base hearts(empty)
         while(i<gp.player.maxLife/3){
             g2.drawImage(empty_heart, x, y, null);
             i++;
             x+=gp.tileSize;
+        }
+
+        x=gp.SCREEN_WIDTH-gp.tileSize*4;
+        y=gp.tileSize;
+        i=0;
+
+        while(i<gp.player.life){
+
+
+            g2.drawImage(hit2_heart,x,y,null);
+            i++;
+            if(i<gp.player.life){
+                g2.drawImage(hit1_heart,x,y,null);
+            }
+            i++;
+            if(i<gp.player.life){
+                g2.drawImage(full_heart,x,y,null);
+            }
+            i++;
+            x+=gp.tileSize;
+
+
         }
     }
 }

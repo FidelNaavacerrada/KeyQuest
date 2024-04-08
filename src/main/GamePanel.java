@@ -1,14 +1,12 @@
 package main;
 
 import entity.Entity;
-import entity.NPC_Starter;
 import entity.Player;
 import object.SuperObject;
 import tiles.TileManager;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -36,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
     TileManager tileM = new TileManager(this);
     public CollisionManager collisionManager = new CollisionManager(this);
     public AssetSetter assetSetter = new AssetSetter(this);
+    Sound sound = new Sound();
 
     //Key Handler
     AL keyH = new AL(this);
@@ -48,14 +47,16 @@ public class GamePanel extends JPanel implements Runnable{
 
     //Entities and objects
     public Player player;
-    public SuperObject obj[] = new SuperObject[10];
-    public Entity npc[] = new Entity[10];
+    public SuperObject obj[] = new SuperObject[25];
+    public Entity npc[] = new Entity[25];
 
     //Game State
     public int gameState;
     public final int playState=1;
     public final int pauseState=2;
     public final int dialogueState=3;
+    public final int gameOver=4;
+    public final int winState=5;
 
     GamePanel(){
 
@@ -74,6 +75,8 @@ public class GamePanel extends JPanel implements Runnable{
         gameState = playState;
         assetSetter.setAsset();
         assetSetter.createNPCs();
+
+        playMusic(0);
     }
 
     public void startGameThread(){
@@ -101,7 +104,13 @@ public class GamePanel extends JPanel implements Runnable{
             //No updates
         }
         if(gameState==dialogueState){
-
+            //No updates
+        }
+        if(gameState==gameOver){
+            //No updates
+        }
+        if(gameState==winState){
+            //No updates
         }
     }
 
@@ -131,6 +140,18 @@ public class GamePanel extends JPanel implements Runnable{
 
         g2.dispose();
 
+    }
+    public void playMusic(int i){
+
+        sound.setFile(i);
+        sound.setVolume(0.1F);
+        sound.play();
+        sound.loop();
+    }
+    public void stopMusic(){ sound.stop(); }
+    public void soundEffect(int i){
+        sound.setFile(i);
+        sound.play();
     }
 
     public void run(){

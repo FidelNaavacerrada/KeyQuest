@@ -9,7 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Entity {
-    //Abstract entity class, used for Player, NPC, Enemies
+    /**
+     * Entity class, used as base class for the different
+     * characters in the game, including Player, Enemy and NPCs.
+     */
 
     public int worldX, worldY;
     public int speed;
@@ -35,6 +38,12 @@ public class Entity {
     public void setAction() {}
     public void setDialogue() {}
     public void speak() {
+        /**
+         * This method controls the Entity interaction when
+         * in dialogue with the player. Makes sure that they
+         * always show some dialogue and directs them towards
+         * the player when speaking.
+         */
 
         //If the dialog reaches the end it repeats it
         if(totalDialogues[dialogueIndex]==null){
@@ -60,6 +69,12 @@ public class Entity {
         }
     }
     public void update(){
+        /**
+         * Update method used by all entities except Player, which has its own
+         * update method.
+         * Calls for collisionManager.checkTile(), checkObject() and checkPlayer(),
+         * the different methods created to control entity collision.
+         */
 
         setAction();
 

@@ -1,7 +1,6 @@
 package entity;
 
 import main.GamePanel;
-import main.UtilityTool;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -87,24 +86,33 @@ public class Player extends Entity{
                         break;
                 }
             }
+            /*The following piece of code handles animation of character when moving, switching bewteen
+            * the 2 different sprites used for each direction (every 10 frames = 1/6 seconds), and also
+            * calling the movement sound effect at the same rate.
+            */
             spriteCounter++;
             if(spriteCounter>10){
                 if(spriteNumber==1)
                     spriteNumber=2;
                 else if(spriteNumber==2)
                     spriteNumber=1;
+                gp.soundEffect(1);
                 spriteCounter=0;
             }
         }
 
     }
     public void pickUpObj(int i) throws IOException{
+        /**
+         * Method that handles player-object interaction
+         */
         if(i!=100){
 
             String objName = gp.obj[i].name;
             switch(objName){
             case "Key":
                 hasKey++;
+                gp.soundEffect(3);
                 gp.obj[i]=null;
                 gp.ui.showMessage("+1 Key");
                 break;
@@ -112,6 +120,7 @@ public class Player extends Entity{
                 if(hasKey>0&& keyH.ePressed){
                     gp.obj[i].collision = false;
                     gp.obj[i].image = ImageIO.read(getClass().getResourceAsStream("/res/objects/door_open.png"));
+                    gp.soundEffect(2);
                     gp.ui.showMessage("Door Opened");
                     hasKey--;
                 }
@@ -120,18 +129,53 @@ public class Player extends Entity{
                         gp.ui.showMessage("You need a Key!");
                 }
                 break;
+            case "healpot":
+                gp.player.life+=3;
+                gp.soundEffect(4);
+                if(gp.player.life>9)
+                    gp.player.life=9;
+                gp.obj[i]=null;
+                gp.ui.showMessage("+1 Heart");
+                break;
+            case "Spike":
+                gp.player.life-=2;
+                if(gp.player.life<=0){
+                    gp.gameState=gp.gameOver;
+                    gp.stopMusic();
+                }
+                gp.obj[i]=null;
+                gp.ui.showMessage("-2 HP");
+                break;
+            case "EndKey":
+                gp.gameState= gp.winState;
+                break;
             }
         }
     }
     public void interactNPC(int i){
+        /**
+         * Method than handles player-npc/enemy interaction
+         */
         if(i!=100){
 
-            if(gp.npc[i] instanceof NPC_Starter){
+            if(gp.npc[i] instanceof NPC_Starter || gp.npc[i] instanceof NPC_Wizard){
 
                 if(keyH.ePressed){
                     gp.gameState=gp.dialogueState;
                     gp.npc[i].speak();
                 }
+            }
+            if(gp.npc[i] instanceof Enemy){
+                gp.player.life-=1;
+                if(gp.player.life<=0){
+                    gp.gameState=gp.gameOver;
+                }
+                /**
+                 * Because this statement is called every frame,
+                 * the enemy will take 1hp every frame
+                 * they are in contact, which makes the enemies
+                 * so dangerous to the player.
+                 */
             }
         }
     }
@@ -150,6 +194,10 @@ public class Player extends Entity{
     }
 
     public void draw(Graphics g2){
+        /**
+         * Handles player sprite drawing, working with the statement created
+         * in the update method by changing spriteNumber's value
+         */
         BufferedImage image = null;
 
         switch(direction){

@@ -2,16 +2,10 @@ package object;
 
 import main.GamePanel;
 
-import java.awt.*;
-import java.awt.event.*;
 import java.io.IOException;
-import java.util.*;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
 public class Key extends SuperObject{
-
-    GamePanel gp;
 
     public Key(GamePanel gp){
         name = "Key";

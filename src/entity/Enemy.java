@@ -2,17 +2,22 @@ package entity;
 
 import main.GamePanel;
 
-import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
-import javax.swing.*;
 
 public class Enemy extends Entity{
-
-    int health;
+    /**
+     * Class that represents the Enemy entities.
+     */
 
     String name;
     public Enemy(GamePanel gp){
+        /**
+         * Class constructor. Calls super constructor
+         * and adds name, movement, direction and speed,
+         * It also calls both class methods getEnemyImage()
+         * and setDialogue().
+         */
+
         super(gp);
 
         name="enemy";
@@ -24,25 +29,34 @@ public class Enemy extends Entity{
     }
 
     public void getEnemyImage(){
+        /**
+         * Loads sprites used by Enemy entity.
+         */
 
-        up1 = setup("npc/up1-npc");
-        up2 = setup("npc/up2-npc");
-        down1 = setup("npc/down1-npc");
-        down2 = setup("npc/down2-npc");
-        left1 = setup("npc/left1-npc");
-        left2 = setup("npc/left2-npc");
-        right1 = setup("npc/right1-npc");
-        right2 = setup("npc/right2-npc");
-        standing = setup("npc/standing-npc");
+        String dir = "/enemy/enemy-";
+
+        up1 = setup(dir+"up1");
+        up2 = setup(dir+"up2");
+        down1 = setup(dir+"down1");
+        down2 = setup(dir+"down2");
+        left1 = setup(dir+"left1");
+        left2 = setup(dir+"left2");
+        right1 = setup(dir+"right1");
+        right2 = setup(dir+"right2");
+        standing = setup(dir+"down1");
 
     }
     public void setAction(){
+        /**
+         * Creates movement for Enemy entity, selecting a
+         * direction every second.
+         */
 
         Random random = new Random();
         int i = random.nextInt(100);
         timeForMovement++;
 
-        if(timeForMovement==120){
+        if(timeForMovement==60){
             if(i<=25)
                 direction="up";
             if(i>25&&i<=50)

@@ -11,9 +11,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class TileManager {
+    /**
+     * Creates map, its different tiles around the player. The map is loaded
+     * as a text document and converted into a matrix (mapTileMatrix).
+     * The draw() method draws the program around the player as it moves,
+     * making the impression that the player is moving when in reality it
+     * is always at the center of the screen.
+     */
 
     GamePanel gp;
     public Tile[] tile;
+    //Tile types array
     public int mapTileMatrix[][];
 
     public TileManager(GamePanel gp){
@@ -27,6 +35,9 @@ public class TileManager {
     }
 
     public void loadMap(String mapPath){
+        /**
+         * Loads the .txt map into mapTileMatrix, separating by white spaces.
+         */
         try{
             InputStream is = getClass().getResourceAsStream(mapPath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -75,6 +86,7 @@ public class TileManager {
         }
     }
     public void draw(Graphics2D g2){
+        //Draw method previously mentioned
 
         int worldCol=0, worldRow=0;
 

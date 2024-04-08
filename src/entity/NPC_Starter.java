@@ -1,17 +1,13 @@
 package entity;
 
 import main.GamePanel;
-import main.UtilityTool;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Random;
 
 public class NPC_Starter extends Entity{
 
     String name;
+    String dir = "npc/moving_npc";
     public NPC_Starter(GamePanel gp){
         super(gp);
 
@@ -25,29 +21,35 @@ public class NPC_Starter extends Entity{
 
     public void getNpcImage(){
 
-        up1 = setup("npc/up1-npc");
-        up2 = setup("npc/up2-npc");
-        down1 = setup("npc/down1-npc");
-        down2 = setup("npc/down2-npc");
-        left1 = setup("npc/left1-npc");
-        left2 = setup("npc/left2-npc");
-        right1 = setup("npc/right1-npc");
-        right2 = setup("npc/right2-npc");
-        standing = setup("npc/standing-npc");
+        up1 = setup(dir+"/up1-npc");
+        up2 = setup(dir+"/up2-npc");
+        down1 = setup(dir+"/down1-npc");
+        down2 = setup(dir+"/down2-npc");
+        left1 = setup(dir+"/left1-npc");
+        left2 = setup(dir+"/left2-npc");
+        right1 = setup(dir+"/right1-npc");
+        right2 = setup(dir+"/right2-npc");
+        standing = setup(dir+"/standing-npc");
 
     }
     public void setDialogue(){
 
-        totalDialogues[0] = "Finally, a hero! I am trapped here, \nyou must let me out.";
+        totalDialogues[0] = "AAAAH! Beware of those creatures, \nI am trapped here with them";
         totalDialogues[1] = "Sorry, I have not introduced myself, \nI am Philip the Great!";
-        totalDialogues[2] = "We need to get out of here, \nyou have to find the MEGAKEY and \nbring it back to me";
-        totalDialogues[3] = "Quickly, start by grabbing \nthat key over there and opening the door.";
+        totalDialogues[2] = "Even though I am very brave, \nmy knee hurts from an epic fight I just had," +
+                "\nThat's why I don't go through myself.";
+        totalDialogues[3] = "Quickly, you have to find the MEGAKEY!\nIt is bigger than the normal keys." +
+                "\nAnd be careful of the spikes too!\nIf you get hurt, drink from the red potions";
     }
     public void speak(){
 
         super.speak();
     }
     public void setAction(){
+        /**
+         * Creates a very basic AI for the NPC movement, which makes it move
+         * and change direction (or nor) randomly every 2 seconds
+         */
 
         Random random = new Random();
         int i = random.nextInt(100);
